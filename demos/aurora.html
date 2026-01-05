@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aurora - spectraGL WebGL - NaughtyDuk©</title>
+    <meta
+      name="description"
+      content="Aurora rainbow light dispersion effects with spectraGL. Applied to hero sections, pricing tables, testimonials, and CTA banners."
+    />
+    <meta
+      name="keywords"
+      content="spectraGL, WebGL, aurora, rainbow, light dispersion, javascript, interactive, naughtyduk"
+    />
+    <meta name="author" content="NaughtyDuk" />
+    <link
+      rel="canonical"
+      href="https://spectragl.naughtyduk.com/demos/aurora"
+    />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+    <meta
+      property="og:title"
+      content="Aurora - spectraGL WebGL - NaughtyDuk©"
+    />
+    <meta
+      property="og:description"
+      content="Aurora rainbow light dispersion effects with spectraGL. Applied to hero sections, pricing tables, testimonials, and CTA banners."
+    />
+    <meta
+      property="og:image"
+      content="https://spectragl.naughtyduk.com/assets/Meta-aurora-min.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://spectragl.naughtyduk.com/demos/aurora"
+    />
+    <meta property="og:type" content="website" />
+    <link
+      rel="preload"
+      href="../assets/Vogue.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="../assets/Inter-XBold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Aurora - spectraGL WebGL - NaughtyDuk©"
+    />
+    <meta
+      name="twitter:description"
+      content="Aurora rainbow light dispersion effects with spectraGL. Applied to hero sections, pricing tables, testimonials, and CTA banners."
+    />
+    <meta
+      name="twitter:image"
+      content="https://spectragl.naughtyduk.com/assets/Meta-aurora-min.jpg"
+    />
+    <style>
+      @font-face {
+        font-family: "Vogue";
+        src: url("../assets/Vogue.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: url("../assets/Inter-XBold.ttf") format("truetype");
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background: #020106;
+        color: #fafafa;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      html,
+      body {
+        overscroll-behavior: none;
+        /* or */
+        overscroll-behavior-y: none; /* Only prevent vertical overscroll */
+      }
+
+      ::selection,
+      img::selection {
+        background: transparent;
+        color: inherit;
+      }
+
+      img {
+        user-drag: none;
+        -webkit-user-drag: none;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: absolute;
+        bottom: 0;
+        width: 50vw;
+        height: 100svh;
+        z-index: 2;
+        pointer-events: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem;
+        mix-blend-mode: exclusion;
+        transform: scale(0.25);
+        flex-direction: column;
+      }
+
+      .hero-title {
+        font-family: "Vogue", serif;
+        font-size: clamp(4rem, 12vw, 10rem);
+        font-weight: 800;
+        line-height: 0.8;
+        letter-spacing: -0.01em;
+        color: #898989;
+        text-transform: uppercase;
+        text-align: justify;
+      }
+
+      .hero-description {
+        font-family: "Vogue", sans-serif;
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1.1;
+        color: #898989;
+        letter-spacing: 0.012em;
+        text-transform: uppercase;
+        position: relative;
+        top: 12rem;
+      }
+
+      #scene-container {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: auto;
+        mix-blend-mode: color-burn;
+        filter: blur(4px) brightness(4.5);
+      }
+
+      #scene-container canvas {
+        width: 100%;
+        height: 100%;
+      }
+
+      @media (max-width: 768px) {
+        .hero-content {
+          flex-direction: column;
+          gap: 2rem;
+          padding: 1rem 0;
+          width: 100%;
+          transform: scale(0.5);
+        }
+      }
+
+      /* Global Navigation Styles */
+      .global-nav {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 10000;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      .nav-container {
+        background: rgb(9 9 11 / 85%);
+        backdrop-filter: blur(16px);
+        border-radius: 12px;
+        border: 0.5px solid #1e1e20;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+      }
+
+      .nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: transparent;
+        border: none;
+        color: #fafafa;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        width: 100%;
+        text-align: left;
+        transition: all 0.2s ease;
+      }
+
+      .nav-toggle:hover {
+        background: rgb(39 39 42 / 50%);
+      }
+
+      .nav-toggle svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .nav-container.expanded .nav-toggle svg {
+        transform: rotate(180deg);
+      }
+
+      .nav-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: scroll;
+      }
+
+      .nav-menu {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .nav-menu::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      .nav-container.expanded .nav-menu {
+        max-height: 450px;
+      }
+
+      .nav-item {
+        display: block;
+        padding: 10px 16px;
+        color: #a1a1aa;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 400;
+        transition: all 0.2s ease;
+        border-top: 0.5px solid #1e1e20;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .nav-item:hover {
+        background: rgb(39 39 42 / 50%);
+        color: #fafafa;
+      }
+
+      .nav-item.active {
+        color: #fafafa;
+        background: rgb(39 39 42 / 30%);
+      }
+
+      .nav-item.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #fafafa;
+      }
+
+      @media (max-width: 768px) {
+        .global-nav {
+          top: 1rem;
+          left: 1rem;
+        }
+
+        .nav-toggle {
+          padding: 10px 14px;
+          font-size: 13px;
+        }
+
+        .nav-item {
+          padding: 8px 14px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Global Navigation -->
+    <nav class="global-nav">
+      <div class="nav-container">
+        <button
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-label="Toggle navigation menu"
+        >
+          <span>Demos</span>
+          <svg viewBox="0 0 16 16">
+            <path d="M8 11L3 6h10l-5 5z" />
+          </svg>
+        </button>
+        <div class="nav-menu">
+          <a href="../index.html" class="nav-item">Index</a>
+          <a href="/demos/demo-elements.html" class="nav-item">Elements</a>
+          <a href="/demos/aurora.html" class="nav-item active">D1 - Aurora</a>
+          <a href="/demos/shimmer.html" class="nav-item">D2 - Shimmer</a>
+          <a href="/demos/pixel.html" class="nav-item">D3 - Pixel</a>
+          <a href="/demos/komorebi.html" class="nav-item">D4 - Komorebi</a>
+          <a href="/demos/nebula.html" class="nav-item">D5 - Nebula</a>
+          <a href="/demos/floral.html" class="nav-item">D6 - Floral</a>
+          <a href="/demos/oil.html" class="nav-item">D7 - Oil</a>
+          <a href="/demos/diva.html" class="nav-item">D8 - Diva</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-background spectraGL-hero"></div>
+      <div class="hero-content">
+        <div id="scene-container"></div>
+        <p class="hero-title">
+          Aurora is a spectraGL mode that uses color gradients to create
+          refraction, light and reflection.
+        </p>
+        <p class="hero-description">Scroll / move / tap</p>
+      </div>
+    </section>
+
+    <!-- Libraries -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+      integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"
+      integrity="sha384-fljlqkjWlmSFjkESkQvm77heIZpoWmXEOzlCA7kOpGUH+95Zk0yGfQieWM2q136E"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- spectraGL Library -->
+    <script src="/scripts/spectraGL.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Initialize 3D scene
+        const container = document.getElementById("scene-container");
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          50,
+          container.clientWidth / container.clientHeight,
+          0.1,
+          1000
+        );
+        const renderer = new THREE.WebGLRenderer({
+          alpha: true,
+          antialias: true,
+        });
+
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setClearColor(0x000000, 0);
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        container.appendChild(renderer.domElement);
+
+        camera.position.z = 30;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+
+        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight2.position.set(-5, -5, 5);
+        scene.add(directionalLight2);
+
+        // Load GLTF model
+        const loader = new THREE.GLTFLoader();
+        let model;
+
+        loader.load(
+          "../assets/scene.gltf",
+          (gltf) => {
+            model = gltf.scene;
+
+            // Traverse and fix materials
+            model.traverse((child) => {
+              if (child.isMesh) {
+                if (child.material) {
+                  // Ensure materials render properly
+                  child.material.needsUpdate = true;
+
+                  // If material has very low opacity, make it more visible
+                  if (
+                    child.material.opacity !== undefined &&
+                    child.material.opacity < 0.1
+                  ) {
+                    child.material.opacity = 0.95;
+                  }
+
+                  // Ensure proper rendering
+                  if (child.material.transparent) {
+                    child.material.depthWrite = true;
+                  }
+                }
+              }
+            });
+
+            scene.add(model);
+
+            // Center and scale model
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = 20 / maxDim;
+            model.scale.setScalar(scale);
+
+            model.position.x = -center.x * scale;
+            model.position.y = -center.y * scale;
+            model.position.z = -center.z * scale;
+          },
+          (xhr) => {
+            console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+          },
+          (error) => {
+            console.error("Error loading GLTF:", error);
+          }
+        );
+
+        // Animation loop
+        function animate() {
+          requestAnimationFrame(animate);
+
+          if (model) {
+            model.rotation.y += 0.005;
+          }
+
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle resize
+        window.addEventListener("resize", () => {
+          camera.aspect = container.clientWidth / container.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        // Initialize aurora effect
+        if (typeof spectraGL !== "undefined") {
+          window.effect = spectraGL({
+            target: ".spectraGL-hero",
+            mode: "aurora",
+            colors: [
+              "#FF6B9D", // Background - Soft Pink
+              "#FF8C42", // Coral Orange
+              "#FFA07A", // Light Salmon
+              "#FF69B4", // Hot Pink
+              "#FF1493", // Deep Pink
+              "#9D4EDD", // Purple
+              "#7209B7", // Deep Purple
+            ],
+            speed: 1.0,
+            foldIntensity: 0.8,
+            foldScale: 1.2,
+            foldSpeed: 1.0,
+            rimIntensity: 1.0,
+            rimColor: "#FFD700",
+            rimFalloff: 2.0,
+            reactive: true,
+            reactiveStrength: 0.4,
+            displacementStrength: 0.4,
+            mouseRadius: 0.25,
+            grain: 0.015,
+            scrollReactive: true,
+            scrollStrength: 0.3,
+            helper: true,
+          });
+        }
+      });
+    </script>
+
+    <script>
+      /* Global Navigation Setup */
+      document.addEventListener("DOMContentLoaded", () => {
+        const navToggle = document.querySelector(".nav-toggle");
+        const navContainer = document.querySelector(".nav-container");
+
+        if (navToggle && navContainer) {
+          navToggle.addEventListener("click", () => {
+            const isExpanded = navContainer.classList.contains("expanded");
+            navContainer.classList.toggle("expanded");
+            navToggle.setAttribute("aria-expanded", !isExpanded);
+          });
+
+          // Close navigation when clicking outside
+          document.addEventListener("click", (e) => {
+            if (!navContainer.contains(e.target)) {
+              navContainer.classList.remove("expanded");
+              navToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+
+          // Close navigation when pressing Escape
+          document.addEventListener("keydown", (e) => {
+            if (
+              e.key === "Escape" &&
+              navContainer.classList.contains("expanded")
+            ) {
+              navContainer.classList.remove("expanded");
+              navToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

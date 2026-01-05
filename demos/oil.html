@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oil - spectraGL WebGL - NaughtyDuk©</title>
+    <meta
+      name="description"
+      content="Oil brushed and reflective surface effects with spectraGL. Premium oillic visual effects for modern web applications."
+    />
+    <meta
+      name="keywords"
+      content="spectraGL, WebGL, oil, brushed, reflective, chrome, javascript, interactive, naughtyduk"
+    />
+    <meta name="author" content="NaughtyDuk" />
+    <link rel="canonical" href="https://spectragl.naughtyduk.com/demos/oil" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+    <meta property="og:title" content="Oil - spectraGL WebGL - NaughtyDuk©" />
+    <meta
+      property="og:description"
+      content="Oil brushed and reflective surface effects with spectraGL. Premium oillic visual effects for modern web applications."
+    />
+    <meta
+      property="og:image"
+      content="https://spectragl.naughtyduk.com/assets/Meta-oil-min.jpg"
+    />
+    <link
+      rel="preload"
+      href="../assets/Meat-Style1.otf"
+      as="font"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
+    <meta
+      property="og:url"
+      content="https://spectragl.naughtyduk.com/demos/oil"
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Oil - spectraGL WebGL - NaughtyDuk" />
+    <meta
+      name="twitter:description"
+      content="Oil brushed and reflective surface effects with spectraGL. Premium oillic visual effects for modern web applications."
+    />
+    <meta
+      name="twitter:image"
+      content="https://spectragl.naughtyduk.com/assets/Meta-oil-min.jpg"
+    />
+    <style>
+      @font-face {
+        font-family: "Meat";
+        src: url("../assets/Meat-Style1.otf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "STO";
+        src: url("../assets/STO.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "ProtoMono-Regular";
+        src: url("../assets/ProtoMono-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background: #0a0a0f;
+        color: #fafafa;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      html,
+      body {
+        overscroll-behavior: none;
+        /* or */
+        overscroll-behavior-y: none; /* Only prevent vertical overscroll */
+      }
+
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 4rem 2rem;
+        overflow: hidden;
+      }
+
+      .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background: #45002f;
+        pointer-events: none;
+        opacity: 0.5;
+        mix-blend-mode: multiply;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 4;
+        pointer-events: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 0 10vw;
+        mix-blend-mode: color-dodge;
+      }
+
+      .hero-title {
+        font-family: "STO", serif;
+        font-size: clamp(3rem, 8vw, 12rem);
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: 0.03em;
+        color: transparent;
+        -webkit-text-stroke: 1px #ff0000;
+        text-stroke: 1px #ff0000;
+        text-transform: uppercase;
+        text-shadow: 0 0 20px rgba(255, 0, 0, 0.8),
+          0 0 40px rgba(255, 0, 0, 0.6), 0 0 60px rgba(255, 0, 0, 0.4),
+          0 0 80px rgba(255, 0, 0, 0.2);
+      }
+
+      .hero-title::selection {
+        background: transparent;
+      }
+
+      .hero-title::-moz-selection {
+        background: transparent;
+      }
+
+      .hero-title::webkit-selection {
+        background: transparent;
+      }
+
+      #model-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+      }
+
+      .footer-text {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 5;
+        font-family: "ProtoMono-Regular";
+        font-size: clamp(0.7rem, 1.5vw, 0.5rem);
+        line-height: 1.2;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: 30rem;
+        text-align: center;
+        width: calc(100% - 2rem);
+      }
+
+      .footer-text .header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .footer-text .description {
+        font-size: clamp(0.6rem, 1.2vw, 0.45rem);
+        line-height: 1.4;
+        opacity: 0.8;
+      }
+
+      .footer-text strong {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 600;
+      }
+
+      .footer-text .separator {
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      /* Global Navigation Styles */
+      .global-nav {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 10000;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      .nav-container {
+        background: rgb(9 9 11 / 85%);
+        backdrop-filter: blur(16px);
+        border-radius: 12px;
+        border: 0.5px solid #1e1e20;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+      }
+
+      .nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: transparent;
+        border: none;
+        color: #fafafa;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        width: 100%;
+        text-align: left;
+        transition: all 0.2s ease;
+      }
+
+      .nav-toggle:hover {
+        background: rgb(39 39 42 / 50%);
+      }
+
+      .nav-toggle svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .nav-container.expanded .nav-toggle svg {
+        transform: rotate(180deg);
+      }
+
+      .nav-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: scroll;
+      }
+
+      .nav-menu {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .nav-menu::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      .nav-container.expanded .nav-menu {
+        max-height: 450px;
+      }
+
+      .nav-item {
+        display: block;
+        padding: 10px 16px;
+        color: #a1a1aa;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 400;
+        transition: all 0.2s ease;
+        border-top: 0.5px solid #1e1e20;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .nav-item:hover {
+        background: rgb(39 39 42 / 50%);
+        color: #fafafa;
+      }
+
+      .nav-item.active {
+        color: #fafafa;
+        background: rgb(39 39 42 / 30%);
+      }
+
+      .nav-item.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #fafafa;
+      }
+
+      @media (max-width: 768px) {
+        .global-nav {
+          top: 1rem;
+          left: 1rem;
+        }
+
+        .nav-toggle {
+          padding: 10px 14px;
+          font-size: 13px;
+        }
+
+        .nav-item {
+          padding: 8px 14px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Global Navigation -->
+    <nav class="global-nav">
+      <div class="nav-container">
+        <button
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-label="Toggle navigation menu"
+        >
+          <span>Demos</span>
+          <svg viewBox="0 0 16 16">
+            <path d="M8 11L3 6h10l-5 5z" />
+          </svg>
+        </button>
+        <div class="nav-menu">
+          <a href="../index.html" class="nav-item">Index</a>
+          <a href="/demos/demo-elements.html" class="nav-item">Elements</a>
+          <a href="/demos/aurora.html" class="nav-item">D1 - Aurora</a>
+          <a href="/demos/shimmer.html" class="nav-item">D2 - Shimmer</a>
+          <a href="/demos/pixel.html" class="nav-item">D3 - Pixel</a>
+          <a href="/demos/komorebi.html" class="nav-item">D4 - Komorebi</a>
+          <a href="/demos/nebula.html" class="nav-item">D5 - Nebula</a>
+          <a href="/demos/floral.html" class="nav-item">D6 - Floral</a>
+          <a href="/demos/oil.html" class="nav-item active">D7 - Oil</a>
+          <a href="/demos/diva.html" class="nav-item">D8 - Diva</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-background spectraGL-hero"></div>
+      <div class="hero-overlay"></div>
+      <div id="model-container" class="hero-model"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">Stranger Things</h1>
+      </div>
+      <div class="footer-text">
+        <div class="header">
+          <strong>SPECTRAGL</strong>
+          <span class="separator">|</span>
+          <span>BY NAUGHTYDUK</span>
+          <span class="separator">|</span>
+          <span>WEBGL</span>
+        </div>
+        <div class="description">
+          An interactive WebGL gradient and lighting system with mouse
+          displacement effects. Built with love by the NaughtyDuk team. Stranger
+          Things is a trademark of Netflix and not affiliated with this demo
+        </div>
+      </div>
+    </section>
+
+    <!-- Libraries -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+      integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"
+      integrity="sha384-fljlqkjWlmSFjkESkQvm77heIZpoWmXEOzlCA7kOpGUH+95Zk0yGfQieWM2q136E"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- spectraGL Library -->
+    <script src="/scripts/spectraGL.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof spectraGL === "undefined") {
+          console.error("spectraGL library not found.");
+          return;
+        }
+
+        // Load 3D Model
+        const modelContainer = document.getElementById("model-container");
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          50,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        const renderer = new THREE.WebGLRenderer({
+          alpha: true,
+          antialias: true,
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        modelContainer.appendChild(renderer.domElement);
+
+        camera.position.z = 5;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+
+        // Red spotlight from top for drop shadow effect
+        const redLight = new THREE.SpotLight(0xff0000, 3.0);
+        redLight.position.set(0, 10, 0);
+        redLight.angle = Math.PI / 4;
+        redLight.penumbra = 0.3;
+        redLight.decay = 2;
+        redLight.distance = 50;
+        redLight.castShadow = true;
+        scene.add(redLight);
+
+        // White spotlight from angle
+        const whiteLight = new THREE.SpotLight(0xffffff, 2.0);
+        whiteLight.position.set(8, 8, 8);
+        whiteLight.angle = Math.PI / 3;
+        whiteLight.penumbra = 0.4;
+        whiteLight.decay = 2;
+        whiteLight.distance = 50;
+        scene.add(whiteLight);
+
+        // Flicker variables
+        let flickerTime = 0;
+
+        // Subtle fill light
+        const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        fillLight.position.set(-5, 3, 5);
+        scene.add(fillLight);
+
+        // Enable shadows on renderer
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // Load GLTF model
+        const loader = new THREE.GLTFLoader();
+        let model;
+        loader.load(
+          "../assets/st/scene.gltf",
+          (gltf) => {
+            model = gltf.scene;
+            scene.add(model);
+
+            // Center and scale model
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            model.position.sub(center);
+
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = 3 / maxDim;
+            model.scale.multiplyScalar(scale);
+          },
+          undefined,
+          (error) => {
+            console.error("Error loading model:", error);
+          }
+        );
+
+        // Track mouse position for model tilt
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+
+        document.addEventListener("mousemove", (event) => {
+          mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+          mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          // Convert mouse position to rotation angles
+          targetRotationY = mouseX * 0.5; // Horizontal tilt
+          targetRotationX = mouseY * 0.3; // Vertical tilt
+        });
+
+        // Animation loop
+        function animate() {
+          requestAnimationFrame(animate);
+
+          // Flicker red light - more intense
+          flickerTime += 0.15;
+          const redFlicker =
+            Math.sin(flickerTime * 5) * 0.6 +
+            Math.sin(flickerTime * 11) * 0.4 +
+            Math.random() * 0.3;
+          redLight.intensity = 3.0 + redFlicker;
+
+          // Flicker white light
+          const whiteFlicker =
+            Math.sin(flickerTime * 4) * 0.4 +
+            Math.sin(flickerTime * 9) * 0.3 +
+            Math.random() * 0.2;
+          whiteLight.intensity = 2.0 + whiteFlicker;
+
+          if (model) {
+            // Smoothly interpolate to target rotation
+            model.rotation.y += (targetRotationY - model.rotation.y) * 0.05;
+            model.rotation.x += (targetRotationX - model.rotation.x) * 0.05;
+          }
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resize
+        window.addEventListener("resize", () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Initialize spectraGL with oil mode
+        window.effect = spectraGL({
+          target: ".spectraGL-hero",
+          mode: "oil",
+          colors: [
+            "#000", // Black base
+            "#000", // Red oil interference
+            "#331f51", // Blue oil interference
+            "#000", // Cyan accent
+          ],
+          speed: 0.6,
+          foldIntensity: 0.4,
+          rimLight: true,
+          rimIntensity: 0.9,
+          rimColor: "#dd2222",
+          reactive: true,
+          reactiveStrength: 0.2,
+          displacementStrength: 0.2,
+          mouseRadius: 0.4,
+          grain: 0.1,
+          scrollReactive: true,
+          scrollStrength: 0.3,
+          helper: true,
+        });
+      });
+    </script>
+
+    <script>
+      /* Global Navigation Setup */
+      document.addEventListener("DOMContentLoaded", () => {
+        const navToggle = document.querySelector(".nav-toggle");
+        const navContainer = document.querySelector(".nav-container");
+
+        if (navToggle && navContainer) {
+          navToggle.addEventListener("click", () => {
+            const isExpanded = navContainer.classList.contains("expanded");
+            navContainer.classList.toggle("expanded");
+            navToggle.setAttribute("aria-expanded", !isExpanded);
+          });
+
+          // Close navigation when clicking outside
+          document.addEventListener("click", (e) => {
+            if (!navContainer.contains(e.target)) {
+              navContainer.classList.remove("expanded");
+              navToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+
+          // Close navigation when pressing Escape
+          document.addEventListener("keydown", (e) => {
+            if (
+              e.key === "Escape" &&
+              navContainer.classList.contains("expanded")
+            ) {
+              navContainer.classList.remove("expanded");
+              navToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

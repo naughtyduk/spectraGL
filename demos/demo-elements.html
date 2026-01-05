@@ -1,0 +1,2979 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elements - spectraGL WebGL - NaughtyDuk©</title>
+    <meta
+      name="description"
+      content="Explore spectraGL effects applied to modern UI elements. Buttons, cards, and components with Aurora, Nebula, Floral, and Oil modes."
+    />
+    <meta
+      name="keywords"
+      content="spectraGL, WebGL, UI components, buttons, cards, aurora, nebula, floral, oil, javascript, interactive, naughtyduk"
+    />
+    <meta name="author" content="NaughtyDuk" />
+    <link
+      rel="canonical"
+      href="https://spectragl.naughtyduk.com/demos/demo-elements"
+    />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+    <meta
+      property="og:title"
+      content="Elements - spectraGL WebGL - NaughtyDuk©"
+    />
+    <meta
+      property="og:description"
+      content="Explore spectraGL effects applied to modern UI elements. Buttons, cards, and components with Aurora, Nebula, Floral, and Oil modes."
+    />
+    <meta
+      property="og:image"
+      content="https://spectragl.naughtyduk.com/assets/Meta-demo-elements-min.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://spectragl.naughtyduk.com/demos/demo-elements"
+    />
+    <meta property="og:type" content="website" />
+    <link
+      rel="preload"
+      href="../assets/Inter-XBold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin="anonymous"
+    />
+    <meta
+      name="twitter:title"
+      content="UI Elements Showcase - spectraGL WebGL - NaughtyDuk©"
+    />
+    <meta
+      name="twitter:description"
+      content="Explore spectraGL effects applied to modern UI elements. Buttons, cards, and components with Aurora, Nebula, Floral, and Oil modes."
+    />
+    <meta
+      name="twitter:image"
+      content="https://spectragl.naughtyduk.com/assets/Meta-demo-elements-min.jpg"
+    />
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../assets/Inter-XBold.ttf") format("truetype");
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      *::-webkit-scrollbar {
+        display: none;
+      }
+
+      * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background: #0a0a0a;
+        color: #fafafa;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      ::selection {
+        background: rgba(255, 255, 255, 0.1);
+        color: inherit;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* Sidebar Tabs */
+      .sidebar {
+        width: 240px;
+        background: #0a0a0a;
+        border-left: 1px solid #1a1a1a;
+        padding: 1.5rem 0 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 99999;
+        overflow-y: auto;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(100%);
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+      }
+
+      .sidebar-header {
+        padding: 0 1rem 1.5rem;
+        border-bottom: 1px solid #1a1a1a;
+      }
+
+      .sidebar-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin-bottom: 0.25rem;
+      }
+
+      .sidebar-subtitle {
+        font-size: 0.875rem;
+        color: #888888;
+        font-weight: 400;
+      }
+
+      .sidebar-logo {
+        margin-top: auto;
+        padding: 1rem;
+        display: flex;
+        justify-content: flex-start;
+      }
+
+      .sidebar-logo img {
+        height: 2rem;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+      }
+
+      .sidebar-logo img:hover {
+        opacity: 0.8;
+      }
+
+      .menu-toggle {
+        display: none;
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 9999999;
+        width: 44px;
+        height: 44px;
+        background: rgba(2, 1, 6, 0.85);
+        backdrop-filter: blur(16px);
+        border: 1px solid #1a1a1a;
+        border-radius: 8px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+
+      .menu-toggle:hover {
+        background: #141414;
+        border-color: #2a2a2a;
+      }
+
+      .menu-toggle svg {
+        width: 20px;
+        height: 20px;
+        stroke: #fafafa;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex;
+        }
+      }
+
+      .tabs {
+        padding: 0.5rem 0;
+      }
+
+      .tab {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        color: #888888;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        margin: 0.125rem 0.5rem;
+        position: relative;
+      }
+
+      .tab:hover {
+        color: #fafafa;
+      }
+
+      .tab.active {
+        color: #fafafa;
+        background: #141414;
+      }
+
+      .tab.active::before {
+        content: "→";
+        position: absolute;
+        left: 0.75rem;
+        font-size: 0.875rem;
+        animation: arrowSlide 0.3s ease-out;
+      }
+
+      @keyframes arrowSlide {
+        from {
+          opacity: 0;
+          transform: translateX(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .tab.active {
+        padding-left: 2rem;
+      }
+
+      /* Main Content Area */
+      .main-content {
+        flex: 1;
+        margin-right: 240px;
+        padding: 8rem 4rem 2rem;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+      }
+
+      .panel {
+        width: 100%;
+        max-width: 1800px;
+        display: none;
+        animation: fadeIn 0.4s ease-in-out;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .panel-header {
+        margin-bottom: 2rem;
+      }
+
+      .panel-title {
+        font-size: 1.875rem;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        margin-bottom: 0.25rem;
+      }
+
+      .panel-description {
+        font-size: 0.875rem;
+        color: #888888;
+        font-weight: 400;
+        line-height: 1.5;
+        max-width: 700px;
+      }
+
+      /* Element Grid */
+      .element-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .element-card {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        transition: border-color 0.2s;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      #typography-panel .element-card {
+        min-height: auto;
+      }
+
+      #typography-panel .element-showcase {
+        flex: 1;
+        min-height: 40px;
+        align-items: flex-start;
+      }
+
+      #typography-panel .element-showcase h1,
+      #typography-panel .element-showcase h2,
+      #typography-panel .element-showcase h3,
+      #typography-panel .element-showcase h4,
+      #typography-panel .element-showcase h5,
+      #typography-panel .element-showcase h6 {
+        line-height: 1;
+      }
+
+      /* Pricing Cards */
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .pricing-card {
+        position: relative;
+        background: #0a0a0a;
+        backdrop-filter: blur(16px);
+        border-radius: 12px;
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow: hidden;
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      .pricing-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .pricing-card .element-label-text {
+        font-size: 0.75rem;
+        color: #666666;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+
+      .pricing-tier {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: #d0d0d0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .pricing-tier img {
+        height: 0.875rem;
+        width: auto;
+      }
+
+      .pricing-price {
+        display: flex;
+        align-items: baseline;
+        gap: 0;
+      }
+
+      .pricing-currency {
+        font-size: 1.6rem !important;
+        font-weight: 700;
+        color: #e0e0e0;
+      }
+
+      .pricing-amount {
+        font-size: 1.6rem !important;
+        font-weight: 700;
+        color: #e0e0e0;
+        letter-spacing: -0.03em;
+      }
+
+      .pricing-period {
+        font-size: 1rem !important;
+        font-weight: 500;
+        color: #a0a0a0;
+        margin-left: 0.5rem;
+      }
+
+      .pricing-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        flex: 1;
+      }
+
+      .pricing-feature {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: #fafafa;
+      }
+
+      .feature-icon {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+        color: #666666;
+      }
+
+      .pricing-button {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        height: 2.5rem;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        border: 1px solid #1a1a1a;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+        overflow: hidden;
+        background: #0a0a0a;
+        color: #fafafa;
+        white-space: nowrap;
+      }
+
+      .pricing-button:hover {
+        background: #141414;
+        border-color: #2a2a2a;
+      }
+
+      .pricing-button .btn-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-left: 0.5rem;
+        border: 1.5px solid currentColor;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .pricing-button .btn-arrow svg {
+        width: 0.65rem;
+        height: 0.65rem;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        fill: none;
+      }
+
+      .pricing-button:hover .btn-arrow svg {
+        animation: arr-r 0.4s ease forwards;
+      }
+
+      @keyframes arr-r {
+        0% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(4px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 1200px) {
+        .pricing-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .pricing-grid {
+          grid-template-columns: 1fr;
+          padding: 0 2px;
+        }
+      }
+
+      .element-card:hover {
+        border-color: #2a2a2a;
+      }
+
+      .element-label {
+        font-size: 0.875rem;
+        color: #888888;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .element-label-text {
+        display: flex;
+        flex-direction: column;
+        color: #909090;
+      }
+
+      .element-style-name {
+        font-size: 0.75rem;
+        color: #666666;
+        font-weight: 400;
+        line-height: 0.7;
+        margin-top: 7px;
+      }
+
+      .element-showcase {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      /* Button Styles */
+      .btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 1rem;
+        height: 2.5rem;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        border: 1px solid #1a1a1a;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+        overflow: hidden;
+        background: #0a0a0a;
+        color: #fafafa;
+        white-space: nowrap;
+      }
+
+      .btn:hover {
+        background: #141414;
+        border-color: #2a2a2a;
+      }
+
+      /* Button arrow */
+      .btn-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-left: 0.5rem;
+        border: 1.5px solid currentColor;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      .btn-arrow svg {
+        width: 0.65rem;
+        height: 0.65rem;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        fill: none;
+      }
+      .btn:hover .btn-arrow svg {
+        animation: arr-r 0.4s ease forwards;
+      }
+      .btn:not(:hover) .btn-arrow svg {
+        animation: arr-l 0.4s ease forwards;
+      }
+      @keyframes arr-r {
+        0%,
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        40% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        50% {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+      }
+      @keyframes arr-l {
+        0%,
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        40% {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        50% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      /* Fill button variant - transparent background shows effect */
+      .btn-fill {
+        background: transparent;
+        border: none;
+      }
+
+      /* Border button variant - opaque background covers canvas center, border shows around edges */
+      .btn-border {
+        background: #0a0a0a;
+        border: none;
+        position: relative;
+        z-index: 1;
+      }
+
+      .btn-border:hover {
+        background: #141414;
+      }
+
+      /* spectraGL effect containers */
+      .spectraGL-aurora-border,
+      .spectraGL-aurora-border-icon,
+      .spectraGL-nebula-border,
+      .spectraGL-nebula-border-icon,
+      .spectraGL-floral-border,
+      .spectraGL-floral-border-icon,
+      .spectraGL-oil-border,
+      .spectraGL-oil-border-icon,
+      .spectraGL-shimmer-border,
+      .spectraGL-shimmer-border-icon,
+      .spectraGL-komorebi-border,
+      .spectraGL-komorebi-border-icon,
+      .spectraGL-diva-border,
+      .spectraGL-diva-border-icon,
+      .spectraGL-pixel-border,
+      .spectraGL-pixel-border-icon,
+      .spectraGL-card-aurora,
+      .spectraGL-card-nebula,
+      .spectraGL-card-floral,
+      .spectraGL-card-oil,
+      .spectraGL-card-shimmer,
+      .spectraGL-card-komorebi,
+      .spectraGL-card-diva,
+      .spectraGL-card-pixel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* Pricing Card Styles */
+      .pricing-card {
+        overflow: hidden;
+      }
+
+      .pricing-card-header {
+        position: relative;
+        height: 120px;
+        overflow: hidden;
+        border-radius: 0.5rem 0.5rem 0 0;
+        margin: -1.25rem -1.25rem 0 -1.25rem;
+        width: calc(100% + 2.5rem);
+      }
+
+      .pricing-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #fafafa;
+      }
+
+      .pricing-price {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fafafa;
+      }
+
+      .pricing-price span {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #888888;
+      }
+
+      .pricing-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .pricing-features li {
+        padding: 0.15rem 0;
+        color: #aaaaaa;
+        font-size: 0.875rem;
+      }
+
+      .pricing-features li:last-child {
+        border-bottom: none;
+      }
+
+      /* Tablet/Medium Responsive */
+      @media (max-width: 1400px) {
+        .element-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 1100px) {
+        .element-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(100%);
+          width: 100%;
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-right: 0;
+          padding: 5rem 1rem;
+        }
+
+        .panel {
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        .panel-title {
+          font-size: 1.5rem;
+        }
+
+        .element-grid {
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+        }
+
+        .element-card {
+          max-width: 100%;
+        }
+      }
+
+      /* Global Navigation Styles */
+      .global-nav {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 10000;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      .nav-container {
+        background: rgb(9 9 11 / 85%);
+        backdrop-filter: blur(16px);
+        border-radius: 12px;
+        border: 0.5px solid #1e1e20;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+      }
+
+      .nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: transparent;
+        border: none;
+        color: #fafafa;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        width: 100%;
+        text-align: left;
+        transition: all 0.2s ease;
+      }
+
+      .nav-toggle:hover {
+        background: rgb(39 39 42 / 50%);
+      }
+
+      .nav-toggle svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .nav-container.expanded .nav-toggle svg {
+        transform: rotate(180deg);
+      }
+
+      .nav-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: scroll;
+      }
+
+      .nav-menu {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .nav-menu::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      .nav-container.expanded .nav-menu {
+        max-height: 450px;
+      }
+
+      .nav-item {
+        display: block;
+        padding: 10px 16px;
+        color: #a1a1aa;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 400;
+        transition: all 0.2s ease;
+        border-top: 0.5px solid #1e1e20;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .nav-item:hover {
+        background: rgb(39 39 42 / 50%);
+        color: #fafafa;
+      }
+
+      .nav-item.active {
+        color: #fafafa;
+        background: rgb(39 39 42 / 30%);
+      }
+
+      .nav-item.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #fafafa;
+      }
+
+      @media (max-width: 768px) {
+        .global-nav {
+          top: 1rem;
+          left: 1rem;
+        }
+
+        .nav-toggle {
+          padding: 10px 14px;
+          font-size: 13px;
+        }
+
+        .nav-item {
+          padding: 8px 14px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Global Navigation -->
+    <nav class="global-nav">
+      <div class="nav-container">
+        <button
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-label="Toggle navigation menu"
+        >
+          <span>Demos</span>
+          <svg viewBox="0 0 16 16">
+            <path d="M8 11L3 6h10l-5 5z" />
+          </svg>
+        </button>
+        <div class="nav-menu">
+          <a href="../index.html" class="nav-item">Index</a>
+          <a href="/demos/demo-elements.html" class="nav-item active"
+            >Elements</a
+          >
+          <a href="/demos/aurora.html" class="nav-item">D1 - Aurora</a>
+          <a href="/demos/shimmer.html" class="nav-item">D2 - Shimmer</a>
+          <a href="/demos/pixel.html" class="nav-item">D3 - Pixel</a>
+          <a href="/demos/komorebi.html" class="nav-item">D4 - Komorebi</a>
+          <a href="/demos/nebula.html" class="nav-item">D5 - Nebula</a>
+          <a href="/demos/floral.html" class="nav-item">D6 - Floral</a>
+          <a href="/demos/oil.html" class="nav-item">D7 - Oil</a>
+          <a href="/demos/diva.html" class="nav-item">D8 - Diva</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Sidebar with Tabs -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h1 class="sidebar-title">spectraGL</h1>
+          <p class="sidebar-subtitle">UI Elements</p>
+        </div>
+        <nav class="tabs">
+          <div class="tab active" data-panel="cards">Cards</div>
+          <div class="tab" data-panel="buttons">Buttons</div>
+          <div class="tab" data-panel="typography">Typography</div>
+        </nav>
+        <div class="sidebar-logo">
+          <img src="../assets/ND25-Grey-Logo.svg" alt="NaughtyDuk" />
+        </div>
+      </aside>
+
+      <!-- Main Content with Panels -->
+      <main class="main-content">
+        <!-- Cards Panel -->
+        <div class="panel active" id="cards-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Cards</h2>
+            <p class="panel-description">
+              Cards with spectraGL animated borders.
+            </p>
+          </div>
+
+          <div class="pricing-grid">
+            <!-- Starter Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-aurora-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/aurora.svg" alt="Aurora" />
+                  Aurora
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-currency">£</span>
+                  <span class="pricing-amount">9</span>
+                  <span class="pricing-period">/mo</span>
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Basic spectraGL effects</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Aurora mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Community support</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Monthly updates</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Documentation access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Email support</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Single project</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-aurora-border"></div>
+                Get Started
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+
+            <!-- Creator Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-nebula-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/nebula.svg" alt="Nebula" />
+                  Nebula
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-currency">£</span>
+                  <span class="pricing-amount">29</span>
+                  <span class="pricing-period">/mo</span>
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>All Starter features</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Nebula mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Priority support</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Advanced customization</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Commercial license</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Multiple projects</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Live chat support</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-nebula-border"></div>
+                Get Started
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+
+            <!-- Pro Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-floral-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/floarl.svg" alt="Floral" />
+                  Floral
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-currency">£</span>
+                  <span class="pricing-amount">79</span>
+                  <span class="pricing-period">/mo</span>
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>All Creator features</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Floral mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>White-label options</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Dedicated support</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Custom integrations</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>API access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Unlimited projects</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-floral-border"></div>
+                Get Started
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+
+            <!-- Enterprise Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-oil-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/oil.svg" alt="Oil" />
+                  Oil
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-amount" style="font-size: 2rem"
+                    >Custom</span
+                  >
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>All Pro features</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Oil mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Unlimited projects</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>SLA guarantee</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Custom development</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>On-premise deployment</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Training & onboarding</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-oil-border"></div>
+                Contact Sales
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+
+            <!-- Shimmer Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-shimmer-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/shimmer.svg" alt="Shimmer" />
+                  Shimmer
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-currency">£</span>
+                  <span class="pricing-amount">19</span>
+                  <span class="pricing-period">/mo</span>
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Iridescent effects</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Shimmer mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Holographic patterns</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Color dispersion</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Mouse reactivity</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Full documentation</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Email support</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-shimmer-border"></div>
+                Get Started
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+
+            <!-- Komorebi Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-komorebi-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/komorebi.svg" alt="Komorebi" />
+                  Komorebi
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-currency">£</span>
+                  <span class="pricing-amount">39</span>
+                  <span class="pricing-period">/mo</span>
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Light through leaves</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Komorebi mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Organic patterns</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Natural animations</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Scroll reactivity</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Priority support</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Multiple projects</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-komorebi-border"></div>
+                Get Started
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+
+            <!-- Diva Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-diva-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/diva.svg" alt="Diva" />
+                  Diva
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-currency">£</span>
+                  <span class="pricing-amount">59</span>
+                  <span class="pricing-period">/mo</span>
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Rainbow spectrum</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Diva mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Vibrant colors</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Dynamic gradients</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Commercial license</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>API access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Dedicated support</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-diva-border"></div>
+                Get Started
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+
+            <!-- Pixel Card -->
+            <div class="pricing-card">
+              <div class="spectraGL-pixel-border"></div>
+              <div class="pricing-header">
+                <h3 class="pricing-tier">
+                  <img src="../assets/pixel.svg" alt="Pixel" />
+                  Pixel
+                </h3>
+                <div class="pricing-price">
+                  <span class="pricing-currency">£</span>
+                  <span class="pricing-amount">99</span>
+                  <span class="pricing-period">/mo</span>
+                </div>
+              </div>
+              <ul class="pricing-features">
+                <li class="pricing-feature">
+                  <div class="element-label-text">
+                    <span>FEATURES</span>
+                  </div>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Dithered patterns</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Pixel mode access</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Retro aesthetics</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Multiple shapes</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>All effects included</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Enterprise support</span>
+                </li>
+                <li class="pricing-feature">
+                  <svg
+                    class="feature-icon"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
+                    <path d="M6 12l-4-4 1.4-1.4L6 9.2l6.6-6.6L14 4z" />
+                  </svg>
+                  <span>Custom development</span>
+                </li>
+              </ul>
+              <button class="pricing-button">
+                <div class="spectraGL-pixel-border"></div>
+                Get Started
+                <span class="btn-arrow"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons Panel -->
+        <div class="panel" id="buttons-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Buttons</h2>
+            <p class="panel-description">
+              Display buttons in different variants.
+            </p>
+          </div>
+
+          <div class="element-grid">
+            <!-- Aurora Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-aurora-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>AURORA</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <!-- Aurora Button - Border with icon -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-aurora-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>AURORA</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+            <!-- Nebula Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-nebula-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>NEBULA</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-nebula-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>NEBULA</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+            <!-- Floral Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-floral-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>FLORAL</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-floral-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>FLORAL</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+            <!-- Oil Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-oil-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>OIL</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-oil-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>OIL</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+            <!-- Shimmer Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-shimmer-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>SHIMMER</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-shimmer-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>SHIMMER</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+            <!-- Komorebi Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-komorebi-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>KOMOREBI</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-komorebi-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>KOMOREBI</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+            <!-- Diva Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-diva-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>DIVA</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-diva-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>DIVA</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+            <!-- Pixel Button - Border -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-pixel-border"></div>
+                  Get Started
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>PIXEL</span>
+                  <span class="element-style-name">Border</span>
+                </div>
+              </div>
+            </div>
+            <div class="element-card">
+              <div class="element-showcase">
+                <button class="btn btn-border">
+                  <div class="spectraGL-pixel-border-icon"></div>
+                  Get Started
+                  <span class="btn-arrow"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></span>
+                </button>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>PIXEL</span>
+                  <span class="element-style-name">Border with icon</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography Panel -->
+        <div class="panel" id="typography-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Typography</h2>
+            <p class="panel-description">
+              Text elements with spectraGL effects.
+            </p>
+          </div>
+
+          <div class="element-grid">
+            <!-- Aurora H1 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h1
+                  class="spectraGL-aurora-text"
+                  style="margin: 0; font-size: 3rem; font-weight: 800"
+                >
+                  spectraGL
+                </h1>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>AURORA</span>
+                  <span class="element-style-name">H1</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nebula H2 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h2
+                  class="spectraGL-nebula-text"
+                  style="margin: 0; font-size: 2.5rem; font-weight: 700"
+                >
+                  spectraGL
+                </h2>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>NEBULA</span>
+                  <span class="element-style-name">H2</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floral H3 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h3
+                  class="spectraGL-floral-text"
+                  style="margin: 0; font-size: 2rem; font-weight: 700"
+                >
+                  spectraGL
+                </h3>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>FLORAL</span>
+                  <span class="element-style-name">H3</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Oil H4 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h4
+                  class="spectraGL-oil-text"
+                  style="margin: 0; font-size: 1.75rem; font-weight: 600"
+                >
+                  spectraGL
+                </h4>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>OIL</span>
+                  <span class="element-style-name">H4</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Aurora H5 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h5
+                  class="spectraGL-aurora-text"
+                  style="margin: 0; font-size: 1.5rem; font-weight: 600"
+                >
+                  spectraGL
+                </h5>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>AURORA</span>
+                  <span class="element-style-name">H5</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nebula H6 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h6
+                  class="spectraGL-nebula-text"
+                  style="margin: 0; font-size: 1.25rem; font-weight: 600"
+                >
+                  spectraGL
+                </h6>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>NEBULA</span>
+                  <span class="element-style-name">H6</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shimmer H1 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h1
+                  class="spectraGL-shimmer-text"
+                  style="margin: 0; font-size: 3rem; font-weight: 800"
+                >
+                  spectraGL
+                </h1>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>SHIMMER</span>
+                  <span class="element-style-name">H1</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Komorebi H2 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h2
+                  class="spectraGL-komorebi-text"
+                  style="margin: 0; font-size: 2.5rem; font-weight: 700"
+                >
+                  spectraGL
+                </h2>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>KOMOREBI</span>
+                  <span class="element-style-name">H2</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diva H3 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h3
+                  class="spectraGL-diva-text"
+                  style="margin: 0; font-size: 2rem; font-weight: 700"
+                >
+                  spectraGL
+                </h3>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>DIVA</span>
+                  <span class="element-style-name">H3</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pixel H4 -->
+            <div class="element-card">
+              <div class="element-showcase">
+                <h4
+                  class="spectraGL-pixel-text"
+                  style="margin: 0; font-size: 1.75rem; font-weight: 600"
+                >
+                  spectraGL
+                </h4>
+              </div>
+              <div class="element-label">
+                <div class="element-label-text">
+                  <span>PIXEL</span>
+                  <span class="element-style-name">H4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Libraries -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+      integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- spectraGL Library -->
+    <script src="/scripts/spectraGL.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Mobile menu toggle
+        const menuToggle = document.getElementById("menuToggle");
+        const sidebar = document.getElementById("sidebar");
+
+        menuToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener("click", (e) => {
+          if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+              sidebar.classList.remove("open");
+            }
+          }
+        });
+
+        // Tab switching functionality
+        const tabs = document.querySelectorAll(".tab");
+        const panels = document.querySelectorAll(".panel");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const panelId = tab.getAttribute("data-panel");
+
+            tabs.forEach((t) => t.classList.remove("active"));
+            panels.forEach((p) => p.classList.remove("active"));
+
+            tab.classList.add("active");
+            document.getElementById(`${panelId}-panel`).classList.add("active");
+
+            // Close sidebar on mobile after selecting a tab
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove("open");
+            }
+          });
+        });
+
+        // Initialize spectraGL effects
+        if (typeof spectraGL !== "undefined") {
+          const auroraColors = [
+            "#1a1a24",
+            "#FF6B9D",
+            "#FF8C42",
+            "#FFA07A",
+            "#FF69B4",
+            "#9D4EDD",
+            "#7209B7",
+          ];
+
+          // ============ AURORA ============
+          spectraGL({
+            target: ".spectraGL-aurora-border",
+            mode: "aurora",
+            colors: [
+              "#FF6B9D",
+              "#FF8C42",
+              "#FFA07A",
+              "#FF69B4",
+              "#FF1493",
+              "#9D4EDD",
+              "#7209B7",
+              "#3A0CA3",
+            ],
+            speed: 1.0,
+            foldIntensity: 0.8,
+            foldScale: 1.2,
+            foldSpeed: 1.0,
+            rimIntensity: 1.0,
+            rimColor: "#FFD700",
+            rimFalloff: 2.0,
+            reactive: true,
+            reactiveStrength: 0.4,
+            displacementStrength: 0.5,
+            mouseRadius: 0.25,
+            grain: 0.015,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-aurora-border-icon",
+            mode: "aurora",
+            colors: [
+              "#FF6B9D",
+              "#FF8C42",
+              "#FFA07A",
+              "#FF69B4",
+              "#FF1493",
+              "#9D4EDD",
+              "#7209B7",
+              "#3A0CA3",
+            ],
+            speed: 1.0,
+            foldIntensity: 0.8,
+            foldScale: 1.2,
+            foldSpeed: 1.0,
+            rimIntensity: 1.0,
+            rimColor: "#FFD700",
+            rimFalloff: 2.0,
+            reactive: true,
+            reactiveStrength: 0.4,
+            displacementStrength: 0.5,
+            mouseRadius: 0.25,
+            grain: 0.015,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ NEBULA ============
+          spectraGL({
+            target: ".spectraGL-nebula-border",
+            mode: "nebula",
+            colors: ["#1f004d", "#9900e0", "#bb308f", "#ff058a"],
+            speed: 1.0,
+            foldIntensity: 0.95,
+            foldScale: 5.0,
+            foldSpeed: 1.0,
+            rimIntensity: 0.55,
+            rimColor: "#d8b4fe",
+            rimFalloff: 2.0,
+            reactive: true,
+            reactiveStrength: 0.3,
+            displacementStrength: 3,
+            mouseRadius: 0.2,
+            grain: 0.015,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-nebula-border-icon",
+            mode: "nebula",
+            colors: ["#1f004d", "#9900e0", "#bb308f", "#ff058a"],
+            speed: 1.0,
+            foldIntensity: 0.95,
+            foldScale: 5.0,
+            foldSpeed: 1.0,
+            rimIntensity: 0.55,
+            rimColor: "#d8b4fe",
+            rimFalloff: 2.0,
+            reactive: true,
+            reactiveStrength: 0.3,
+            displacementStrength: 3,
+            mouseRadius: 0.2,
+            grain: 0.015,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ FLORAL ============
+          const floralColors = [
+            "#008394",
+            "#2d8b6b",
+            "#f43e87",
+            "#ffb347",
+            "#ff6b9d",
+            "#ff4757",
+            "#ffb3ba",
+            "#c2d65c",
+          ];
+          spectraGL({
+            target: ".spectraGL-floral-border",
+            mode: "floral",
+            colors: floralColors,
+            speed: 2.1,
+            foldIntensity: 0.3,
+            foldScale: 3.1,
+            foldSpeed: 1.0,
+            rimIntensity: 0.4,
+            rimColor: "#ffffff",
+            rimFalloff: 5.0,
+            reactive: true,
+            reactiveStrength: 0.4,
+            displacementStrength: 1,
+            mouseRadius: 0.25,
+            grain: 0.015,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-floral-border-icon",
+            mode: "floral",
+            colors: floralColors,
+            speed: 2.1,
+            foldIntensity: 0.3,
+            foldScale: 3.1,
+            foldSpeed: 1.0,
+            rimIntensity: 0.4,
+            rimColor: "#ffffff",
+            rimFalloff: 5.0,
+            reactive: true,
+            reactiveStrength: 0.4,
+            displacementStrength: 1,
+            mouseRadius: 0.25,
+            grain: 0.015,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ OIL ============
+          spectraGL({
+            target: ".spectraGL-oil-border",
+            mode: "oil",
+            colors: ["#000", "#000", "#331f51", "#000"],
+            speed: 0.6,
+            foldIntensity: 0.4,
+            foldScale: 0.2,
+            foldSpeed: 0.2,
+            rimLight: true,
+            rimIntensity: 1.9,
+            rimColor: "#dd2222",
+            reactive: true,
+            reactiveStrength: 0.002,
+            displacementStrength: 0.05,
+            mouseRadius: 0.000004,
+            grain: 0.1,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-oil-border-icon",
+            mode: "oil",
+            colors: ["#000", "#000", "#331f51", "#000"],
+            speed: 0.6,
+            foldIntensity: 0.4,
+            foldScale: 0.2,
+            foldSpeed: 0.2,
+            rimLight: true,
+            rimIntensity: 1.9,
+            rimColor: "#dd2222",
+            reactive: true,
+            reactiveStrength: 0.002,
+            displacementStrength: 0.05,
+            mouseRadius: 0.4,
+            grain: 0.1,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ SHIMMER ============
+          const shimmerColors = [
+            "#3c45c3",
+            "#ff6b9d",
+            "#4ecdc4",
+            "#ffe66d",
+            "#a855f7",
+            "#3b82f6",
+            "#10b981",
+          ];
+          spectraGL({
+            target: ".spectraGL-shimmer-border",
+            mode: "shimmer",
+            colors: shimmerColors,
+            speed: 1.3,
+            foldIntensity: 1.0,
+            foldScale: 3.5,
+            foldSpeed: 0.2,
+            rimLight: true,
+            rimIntensity: 0.5,
+            rimColor: "#ffffff",
+            rimFalloff: 2.5,
+            reactive: true,
+            reactiveStrength: 0.8,
+            displacementStrength: 0.3,
+            mouseRadius: 0.4,
+            grain: 0.02,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-shimmer-border-icon",
+            mode: "shimmer",
+            colors: shimmerColors,
+            speed: 1.3,
+            foldIntensity: 1.0,
+            foldScale: 3.5,
+            foldSpeed: 0.2,
+            rimLight: true,
+            rimIntensity: 0.5,
+            rimColor: "#ffffff",
+            rimFalloff: 2.5,
+            reactive: true,
+            reactiveStrength: 0.8,
+            displacementStrength: 0.3,
+            mouseRadius: 0.4,
+            grain: 0.02,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ KOMOREBI ============
+          const komorebiColors = ["#0a0a12", "#f227FF", "#FF9FFC", "#B19EEF"];
+          spectraGL({
+            target: ".spectraGL-komorebi-border",
+            mode: "komorebi",
+            colors: komorebiColors,
+            speed: 1.5,
+            foldIntensity: 1.5,
+            foldScale: 20.0,
+            foldSpeed: 10.0,
+            rimLight: true,
+            rimIntensity: 1,
+            rimColor: "#f27d7d",
+            rimFalloff: 4.0,
+            reactive: true,
+            reactiveStrength: 0.5,
+            displacementStrength: 0.5,
+            mouseRadius: 0.3,
+            grain: 0.03,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-komorebi-border-icon",
+            mode: "komorebi",
+            colors: komorebiColors,
+            speed: 1.5,
+            foldIntensity: 1.5,
+            foldScale: 20.0,
+            foldSpeed: 10.0,
+            rimLight: true,
+            rimIntensity: 1,
+            rimColor: "#f27d7d",
+            rimFalloff: 4.0,
+            reactive: true,
+            reactiveStrength: 0.5,
+            displacementStrength: 0,
+            mouseRadius: 0.3,
+            grain: 0.03,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ DIVA ============
+          const divaColors = [
+            "#FF1493",
+            "#FF69B4",
+            "#FFD700",
+            "#00FF7F",
+            "#00CED1",
+            "#1E90FF",
+            "#9370DB",
+          ];
+          spectraGL({
+            target: ".spectraGL-diva-border",
+            mode: "diva",
+            colors: divaColors,
+            speed: 0.8,
+            foldIntensity: 1.2,
+            foldScale: 2.5,
+            foldSpeed: 0.8,
+            rimIntensity: 0.4,
+            rimColor: "#FFFFFF",
+            rimFalloff: 1.1,
+            reactive: true,
+            reactiveStrength: 0.5,
+            displacementStrength: 0.5,
+            mouseRadius: 0.3,
+            grain: 0.01,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-diva-border-icon",
+            mode: "diva",
+            colors: divaColors,
+            speed: 0.8,
+            foldIntensity: 1.2,
+            foldScale: 2.5,
+            foldSpeed: 0.8,
+            rimIntensity: 0.4,
+            rimColor: "#FFFFFF",
+            rimFalloff: 1.1,
+            reactive: true,
+            reactiveStrength: 0.5,
+            displacementStrength: 0.5,
+            mouseRadius: 0.3,
+            grain: 0.01,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ PIXEL ============
+          const pixelColors = ["#0a0a12", "#B19EEF", "#5227FF", "#ff00f7"];
+          spectraGL({
+            target: ".spectraGL-pixel-border",
+            mode: "pixel",
+            colors: pixelColors,
+            colorBlend: "smooth",
+            speed: 0.5,
+            foldIntensity: 0.0,
+            foldScale: 2.0,
+            foldSpeed: 1.0,
+            rimLight: false,
+            rimIntensity: 0.0,
+            rimColor: "#B19EEF",
+            rimFalloff: 15.0,
+            reactive: true,
+            reactiveStrength: 0.8,
+            displacementStrength: 0.3,
+            mouseRadius: 0.4,
+            grain: 0.0,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+          spectraGL({
+            target: ".spectraGL-pixel-border-icon",
+            mode: "pixel",
+            colors: pixelColors,
+            colorBlend: "smooth",
+            speed: 0.5,
+            foldIntensity: 0.0,
+            foldScale: 2.0,
+            foldSpeed: 1.0,
+            rimLight: false,
+            rimIntensity: 0.0,
+            rimColor: "#B19EEF",
+            rimFalloff: 15.0,
+            reactive: true,
+            reactiveStrength: 0.8,
+            displacementStrength: 0.3,
+            mouseRadius: 0.4,
+            grain: 0.0,
+            scrollReactive: false,
+            border: {
+              enabled: true,
+              width: 2,
+              radiusFromElement: true,
+              position: "outside",
+            },
+          });
+
+          // ============ TYPOGRAPHY ============
+          spectraGL({
+            target: ".spectraGL-aurora-text",
+            mode: "aurora",
+            colors: [
+              "#FF6B9D",
+              "#FF8C42",
+              "#FFA07A",
+              "#FF69B4",
+              "#FF1493",
+              "#9D4EDD",
+              "#7209B7",
+              "#3A0CA3",
+            ],
+            speed: 1.0,
+            foldIntensity: 0.8,
+            foldScale: 1.2,
+            foldSpeed: 1.0,
+            rimIntensity: 1.0,
+            rimColor: "#FFD700",
+            rimFalloff: 2.0,
+            reactive: true,
+            reactiveStrength: 0.4,
+            displacementStrength: 0.5,
+            mouseRadius: 0.25,
+            grain: 0.015,
+            scrollReactive: false,
+          });
+
+          spectraGL({
+            target: ".spectraGL-nebula-text",
+            mode: "nebula",
+            colors: ["#1f004d", "#9900e0", "#bb308f", "#ff058a"],
+            speed: 1.0,
+            foldIntensity: 0.95,
+            foldScale: 5.0,
+            foldSpeed: 1.0,
+            rimIntensity: 0.55,
+            rimColor: "#d8b4fe",
+            rimFalloff: 2.0,
+            reactive: true,
+            reactiveStrength: 0.3,
+            displacementStrength: 3,
+            mouseRadius: 0.2,
+            grain: 0.015,
+            scrollReactive: false,
+          });
+
+          spectraGL({
+            target: ".spectraGL-floral-text",
+            mode: "floral",
+            colors: floralColors,
+            speed: 2.1,
+            foldIntensity: 0.3,
+            foldScale: 3.1,
+            foldSpeed: 1.0,
+            rimIntensity: 0.4,
+            rimColor: "#ffffff",
+            rimFalloff: 5.0,
+            reactive: true,
+            reactiveStrength: 0.4,
+            displacementStrength: 1,
+            mouseRadius: 0.25,
+            grain: 0.015,
+            scrollReactive: false,
+          });
+
+          spectraGL({
+            target: ".spectraGL-oil-text",
+            mode: "oil",
+            colors: ["#000", "#000", "#331f51", "#000"],
+            speed: 0.6,
+            foldIntensity: 0.4,
+            foldScale: 0.2,
+            foldSpeed: 0.2,
+            rimLight: true,
+            rimIntensity: 1.9,
+            rimColor: "#dd2222",
+            reactive: true,
+            reactiveStrength: 0.002,
+            displacementStrength: 0.05,
+            mouseRadius: 0.4,
+            grain: 0.1,
+            scrollReactive: false,
+          });
+
+          spectraGL({
+            target: ".spectraGL-shimmer-text",
+            mode: "shimmer",
+            colors: shimmerColors,
+            speed: 1.3,
+            foldIntensity: 1.0,
+            foldScale: 3.5,
+            foldSpeed: 0.2,
+            rimLight: true,
+            rimIntensity: 0.5,
+            rimColor: "#ffffff",
+            rimFalloff: 2.5,
+            reactive: true,
+            reactiveStrength: 0.8,
+            displacementStrength: 0.3,
+            mouseRadius: 0.4,
+            grain: 0.02,
+            scrollReactive: false,
+          });
+
+          spectraGL({
+            target: ".spectraGL-komorebi-text",
+            mode: "komorebi",
+            colors: komorebiColors,
+            speed: 1.5,
+            foldIntensity: 1.5,
+            foldScale: 20.0,
+            foldSpeed: 10.0,
+            rimLight: true,
+            rimIntensity: 1,
+            rimColor: "#f27d7d",
+            rimFalloff: 4.0,
+            reactive: true,
+            reactiveStrength: 0.5,
+            displacementStrength: 0,
+            mouseRadius: 0.3,
+            grain: 0.03,
+            scrollReactive: false,
+          });
+
+          spectraGL({
+            target: ".spectraGL-diva-text",
+            mode: "diva",
+            colors: divaColors,
+            speed: 0.8,
+            foldIntensity: 1.2,
+            foldScale: 2.5,
+            foldSpeed: 0.8,
+            rimIntensity: 0.4,
+            rimColor: "#FFFFFF",
+            rimFalloff: 1.1,
+            reactive: true,
+            reactiveStrength: 0.5,
+            displacementStrength: 0.5,
+            mouseRadius: 0.3,
+            grain: 0.01,
+            scrollReactive: false,
+          });
+
+          spectraGL({
+            target: ".spectraGL-pixel-text",
+            mode: "pixel",
+            colors: pixelColors,
+            colorBlend: "smooth",
+            speed: 0.5,
+            foldIntensity: 1.0,
+            foldScale: 2.0,
+            foldSpeed: 1.0,
+            rimLight: false,
+            rimIntensity: 0.5,
+            rimColor: "#B19EEF",
+            rimFalloff: 1.0,
+            reactive: true,
+            reactiveStrength: 0.8,
+            displacementStrength: 0.3,
+            mouseRadius: 0.4,
+            grain: 0.0,
+            scrollReactive: false,
+          });
+        }
+      });
+    </script>
+
+    <script>
+      /* Global Navigation Setup */
+      document.addEventListener("DOMContentLoaded", () => {
+        const navToggle = document.querySelector(".nav-toggle");
+        const navContainer = document.querySelector(".nav-container");
+
+        if (navToggle && navContainer) {
+          navToggle.addEventListener("click", () => {
+            const isExpanded = navContainer.classList.contains("expanded");
+            navContainer.classList.toggle("expanded");
+            navToggle.setAttribute("aria-expanded", !isExpanded);
+          });
+
+          // Close navigation when clicking outside
+          document.addEventListener("click", (e) => {
+            if (!navContainer.contains(e.target)) {
+              navContainer.classList.remove("expanded");
+              navToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+
+          // Close navigation when pressing Escape
+          document.addEventListener("keydown", (e) => {
+            if (
+              e.key === "Escape" &&
+              navContainer.classList.contains("expanded")
+            ) {
+              navContainer.classList.remove("expanded");
+              navToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
