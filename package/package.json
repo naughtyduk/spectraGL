@@ -1,6 +1,6 @@
 {
   "name": "spectra-gl",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "WebGL interactive light and colour effects for any DOM element.",
   "type": "module",
   "main": "./spectraGL.js",

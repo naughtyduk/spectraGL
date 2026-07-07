@@ -6,7 +6,7 @@
   </a>
 </p>
 
-**v1.0.5**
+**v1.0.6**
 
 > [!NOTE]
 > `spectraGL` uses a dual licence model. It is **free for personal use**. `spectraGL` requires a licence for commercial use, see the [licensing section](#licence) for more details.
@@ -317,7 +317,7 @@ effect.destroy();
 
 ## Licence
 
-`spectraGL` is released under a dual-licence model to support both personal and commercial use. For full details, please see the [LICENCE](./LICENCE.md) file.
+`spectraGL` is released under a dual-licence model to support both personal and commercial use. For full details, please see the [LICENCE](https://github.com/naughtyduk/spectraGL/blob/main/LICENCE.md) file.
 
 ### Personal Use
 
@@ -331,8 +331,8 @@ A paid commercial licence is required for any project that is commercial in natu
 
 **Single Licence:**<br>
 `For one commercial website or project.`<br><br>
-<a href="https://pay.naughtyduk.com/b/9B68wPaEGcovbNKbZP9sk0d" target="_blank" rel="noopener noreferrer"><img src="./assets/licence-btn.svg" alt="Get Licence Button"></a>
+<a href="https://pay.naughtyduk.com/b/9B68wPaEGcovbNKbZP9sk0d" target="_blank" rel="noopener noreferrer"><img src="https://raw.githubusercontent.com/naughtyduk/spectraGL/main/assets/get-licence-npm.png" alt="Get Licence" width="120"></a>
 
 **Extended Licence:**<br>
 `For up to five commercial projects.`<br><br>
-<a href="https://pay.naughtyduk.com/b/28E3cv0029cj0527Jz9sk0e" target="_blank" rel="noopener noreferrer"><img src="./assets/licence-btn.svg" alt="Get Licence Button"></a>
+<a href="https://pay.naughtyduk.com/b/28E3cv0029cj0527Jz9sk0e" target="_blank" rel="noopener noreferrer"><img src="https://raw.githubusercontent.com/naughtyduk/spectraGL/main/assets/get-licence-npm.png" alt="Get Licence" width="120"></a>

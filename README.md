@@ -6,7 +6,7 @@
   </a>
 </p>
 
-**v1.0.5**
+**v1.0.6**
 
 > [!IMPORTANT]
 > `spectraGL` is now available on npm: `npm install spectra-gl`. The `package/` directory contains the npm package source and is not required when using the CDN/browser script.

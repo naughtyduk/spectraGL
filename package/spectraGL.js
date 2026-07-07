@@ -3633,7 +3633,7 @@ const spectraGL = (function () {
   };
 
   spectraGL.isSupported = () => WebGLSupport.getSupported();
-  spectraGL.version = "1.0.5";
+  spectraGL.version = "1.0.6";
 
   return spectraGL;
 })();

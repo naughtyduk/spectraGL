@@ -3627,5 +3627,5 @@
   };
 
   window.spectraGL.isSupported = () => WebGLSupport.getSupported();
-  window.spectraGL.version = "1.0.5";
+  window.spectraGL.version = "1.0.6";
 })();
