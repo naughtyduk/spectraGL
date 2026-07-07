@@ -2,21 +2,18 @@
 
 <p align="center">
   <a href="https://spectragl.naughtyduk.com">
-    <img src="/assets/spectraGL-promo-IMG.gif" alt="spectraGL" width="100%"/>
+    <img src="https://raw.githubusercontent.com/naughtyduk/spectraGL/main/assets/spectraGL-npm-preview.gif" alt="spectraGL" width="100%" height="auto"/>
   </a>
 </p>
 
 **v1.0.5**
-
-> [!IMPORTANT]
-> `spectraGL` is now available on npm: `npm install spectra-gl`. The `package/` directory contains the npm package source and is not required when using the CDN/browser script.
 
 > [!NOTE]
 > `spectraGL` uses a dual licence model. It is **free for personal use**. `spectraGL` requires a licence for commercial use, see the [licensing section](#licence) for more details.
 
 `spectraGL` transforms any DOM element into beautiful, interactive light and colour effects with mouse reactivity, rendered in high-performance WebGL. It works on divs, buttons, text etc.
 
-<a href="https://spectragl.naughtyduk.com" target="_blank" rel="noopener noreferrer"><img src="./assets/try-btn.svg" alt="Try It Out Button"></a>
+<a href="https://spectragl.naughtyduk.com" target="_blank" rel="noopener noreferrer"><img src="https://raw.githubusercontent.com/naughtyduk/spectraGL/main/assets/try-it-out-npm.png" alt="Try It Out" width="120"></a>
 
 **DEMOS**
 
@@ -45,16 +42,35 @@
 
 ---
 
+## Install from npm
+
+```sh
+npm install spectra-gl
+```
+
+```js
+import spectraGL from "spectra-gl";
+
+const effect = spectraGL({
+  target: ".spectraGL",
+  mode: "aurora",
+});
+```
+
+> `three` is installed automatically as a package dependency.
+
+---
+
 ## Prerequisites
 
-Add the following scripts before you initialise `spectraGL()` (normally at the end of the `<body>`):
+For CDN/browser-script usage, add the following scripts before you initialise `spectraGL()` (normally at the end of the `<body>`):
 
 ```html
 <!-- Three.js – WebGL 3D library (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <!-- spectraGL.min.js – the library itself -->
-<script src="/scripts/spectraGL.min.js"></script>
+<script src="https://spectragl.naughtyduk.com/scripts/spectraGL.min.js"></script>
 ```
 
 > `Three.js` provides the WebGL rendering engine that powers `spectraGL`. The library will not work without Three.js.
@@ -87,75 +103,73 @@ Set up your HTML structure first. Add the `spectraGL` class to any element you w
 
 Next, initialise the library with your desired configuration.
 
-```html
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const effect = spectraGL({
-      target: ".spectraGL", // CSS selector for the element(s) to apply effects
-      mode: "aurora", // Visual mode: aurora, shimmer, pixel, komorebi, nebula, floral, oil, diva
+```js
+import spectraGL from "spectra-gl";
 
-      // Colours (7-colour spectrum for rainbow modes)
-      colors: [
-        "#ff6b6b",
-        "#4ecdc4",
-        "#45b7d1",
-        "#f9ca24",
-        "#6c5ce7",
-        "#00b894",
-        "#fd79a8",
-      ],
-      colorBlend: "smooth", // Blend mode: smooth, sharp, stepped
-      colorBalance: [1, 1, 1, 1, 1, 1, 1], // Individual colour intensities
+const effect = spectraGL({
+  target: ".spectraGL", // CSS selector for the element(s) to apply effects
+  mode: "aurora", // Visual mode: aurora, shimmer, pixel, komorebi, nebula, floral, oil, diva
 
-      // Geometry & Animation
-      meshDetail: 32, // Mesh subdivision (16=low, 32=balanced, 64=high)
-      foldIntensity: 0.5, // Effect intensity/complexity
-      foldScale: 1.0, // Pattern scale
-      foldSpeed: 1.0, // Animation speed multiplier
-      speed: 1.0, // Global speed control
-      direction: "auto", // Flow direction: auto, up, down, left, right
+  // Colours (7-colour spectrum for rainbow modes)
+  colors: [
+    "#ff6b6b",
+    "#4ecdc4",
+    "#45b7d1",
+    "#f9ca24",
+    "#6c5ce7",
+    "#00b894",
+    "#fd79a8",
+  ],
+  colorBlend: "smooth", // Blend mode: smooth, sharp, stepped
+  colorBalance: [1, 1, 1, 1, 1, 1, 1], // Individual colour intensities
 
-      // Lighting
-      rimLight: true, // Enable rim/edge lighting
-      rimIntensity: 0.8, // Rim light intensity
-      rimColor: "#ffffff", // Rim light colour
-      rimFalloff: 2.0, // Rim light falloff
+  // Geometry & Animation
+  meshDetail: 32, // Mesh subdivision (16=low, 32=balanced, 64=high)
+  foldIntensity: 0.5, // Effect intensity/complexity
+  foldScale: 1.0, // Pattern scale
+  foldSpeed: 1.0, // Animation speed multiplier
+  speed: 1.0, // Global speed control
+  direction: "auto", // Flow direction: auto, up, down, left, right
 
-      // Texture
-      grain: 0.05, // Film grain amount
+  // Lighting
+  rimLight: true, // Enable rim/edge lighting
+  rimIntensity: 0.8, // Rim light intensity
+  rimColor: "#ffffff", // Rim light colour
+  rimFalloff: 2.0, // Rim light falloff
 
-      // Reactivity
-      reactive: true, // Enable mouse interaction
-      reactiveStrength: 0.3, // Mouse influence strength
-      displacementStrength: 0.3, // Velocity-based displacement
-      mouseRadius: 0.15, // Mouse influence radius
-      scrollReactive: false, // Enable scroll interaction
-      scrollStrength: 0.2, // Scroll influence strength
+  // Texture
+  grain: 0.05, // Film grain amount
 
-      // Performance
-      qualityPreset: "balanced", // Quality: low, balanced, high
-      maxFPS: 60, // Frame rate limit: 30, 60, 120
+  // Reactivity
+  reactive: true, // Enable mouse interaction
+  reactiveStrength: 0.3, // Mouse influence strength
+  displacementStrength: 0.3, // Velocity-based displacement
+  mouseRadius: 0.15, // Mouse influence radius
+  scrollReactive: false, // Enable scroll interaction
+  scrollStrength: 0.2, // Scroll influence strength
 
-      // Border Mode (for buttons, cards etc.)
-      border: {
-        enabled: false, // Enable border mode
-        width: 2, // Border width in pixels
-        radius: null, // Border radius (null = inherit from element)
-      },
+  // Performance
+  qualityPreset: "balanced", // Quality: low, balanced, high
+  maxFPS: 60, // Frame rate limit: 30, 60, 120
 
-      // Development Helper
-      helper: false, // Enable to design visually and copy code, disable for production
+  // Border Mode (for buttons, cards etc.)
+  border: {
+    enabled: false, // Enable border mode
+    width: 2, // Border width in pixels
+    radius: null, // Border radius (null = inherit from element)
+  },
 
-      on: {
-        init(instance) {
-          // The `init` callback fires once spectraGL has initialised
-          // and rendered the first frame
-          console.log("spectraGL ready!", instance);
-        },
-      },
-    });
-  });
-</script>
+  // Development Helper
+  helper: false, // Enable to design visually and copy code, disable for production
+
+  on: {
+    init(instance) {
+      // The `init` callback fires once spectraGL has initialised
+      // and rendered the first frame
+      console.log("spectraGL ready!", instance);
+    },
+  },
+});
 ```
 
 **Visual Modes**

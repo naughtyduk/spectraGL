@@ -1,0 +1,37 @@
+{
+  "name": "spectra-gl",
+  "version": "1.0.5",
+  "description": "WebGL interactive light and colour effects for any DOM element.",
+  "type": "module",
+  "main": "./spectraGL.js",
+  "module": "./spectraGL.js",
+  "exports": {
+    ".": {
+      "import": "./spectraGL.js",
+      "default": "./spectraGL.js"
+    }
+  },
+  "files": [
+    "spectraGL.js",
+    "README.md",
+    "LICENCE.md"
+  ],
+  "dependencies": {
+    "three": "^0.178.0"
+  },
+  "keywords": [
+    "spectra",
+    "webgl",
+    "three",
+    "aurora",
+    "shimmer",
+    "interactive",
+    "shader"
+  ],
+  "author": "NaughtyDuk",
+  "license": "SEE LICENCE.md",
+  "homepage": "https://spectragl.naughtyduk.com",
+  "publishConfig": {
+    "access": "public"
+  }
+}

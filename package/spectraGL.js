@@ -8,7 +8,13 @@
  * Modes: Aurora, Shimmer, Pixel, Komorebi, Nebula, Floral, Oil, Diva
  */
 
-(function () {
+import * as THREE from "three";
+
+if (typeof window !== "undefined" && !window.THREE) {
+  window.THREE = THREE;
+}
+
+const spectraGL = (function () {
   "use strict";
 
   /* --------------------------------------------------
@@ -3510,7 +3516,7 @@
   /* --------------------------------------------------
    *  Public API
    * ------------------------------------------------*/
-  window.spectraGL = function (userOptions = {}) {
+  const spectraGL = function (userOptions = {}) {
     const defaults = {
       target: ".spectraGL",
       mode: "aurora",
@@ -3626,6 +3632,10 @@
     };
   };
 
-  window.spectraGL.isSupported = () => WebGLSupport.getSupported();
-  window.spectraGL.version = "1.0.5";
+  spectraGL.isSupported = () => WebGLSupport.getSupported();
+  spectraGL.version = "1.0.5";
+
+  return spectraGL;
 })();
+
+export default spectraGL;
